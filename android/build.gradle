@@ -1,6 +1,11 @@
+import de.undercouch.gradle.tasks.download.Download
+
 group 'com.example.komodo_dex_server'
 version '1.0-SNAPSHOT'
 
+String API_VERSION = "v1.0.4-beta"
+String COMMIT = "371595d6c"
+String DOWNLOAD_URL = "https://github.com/KomodoPlatform/atomicDEX-API/releases/download"
 buildscript {
     ext.kotlin_version = '1.7.10'
     repositories {
@@ -11,6 +16,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.3.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'de.undercouch:gradle-download-task:4.1.1' // Added this line
     }
 }
 
@@ -43,6 +49,19 @@ android {
 
     defaultConfig {
         minSdkVersion 16
+
+        externalNativeBuild {
+            cmake {
+                // cppFlags ""
+                cppFlags "-std=c++17 -stdlib=libc++"
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
     }
 
     dependencies {
@@ -62,3 +81,43 @@ android {
         }
     }
 }
+
+
+def downloadAndExtract(String version, String commit, String arch, String outDir) {
+    String downloadURL = "${DOWNLOAD_URL}/${version}/mm2-${commit}-android-${arch}-CI.zip"
+    String outputFileName = "${outDir}/libmm2.a"
+    
+    task "download${arch.capitalize()}", type: Download {
+        doFirst {
+            logger.lifecycle("Starting download from $downloadURL to $outputFileName")
+        }
+        
+        src downloadURL
+        dest outputFileName
+        overwrite true
+        
+        doLast {
+            def fileSize = new File(outputFileName).length() / (1024 * 1024) // size in MB
+            logger.lifecycle("Finished download. File size is $fileSize MB")
+        }
+    }
+
+    task "extract${arch.capitalize()}", dependsOn: "download${arch.capitalize()}" {
+        doFirst {
+            logger.lifecycle("Starting extraction of $outputFileName")
+        }
+
+        doLast {
+            copy {
+                from zipTree(outputFileName)
+                into outDir
+            }
+
+            logger.lifecycle("Finished extraction. Deleting downloaded ZIP file...")
+            delete outputFileName
+        }
+    }
+}
+
+// downloadAndExtract(API_VERSION, COMMIT, "aarch64", "src/main/jniLibs/arm64-v8a")
+// downloadAndExtract(API_VERSION, COMMIT, "armv7", "src/main/jniLibs/armeabi-v7a")

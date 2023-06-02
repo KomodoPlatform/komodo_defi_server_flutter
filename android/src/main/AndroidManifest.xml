@@ -1,3 +1,2 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.example.komodo_dex_server">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.komodoplatform.komodo_dex_server">
 </manifest>
