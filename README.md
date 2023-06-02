@@ -13,6 +13,13 @@ A Flutter package for running the AtomicDEX API binary on Flutter-supported devi
 - Restarting the API when a request to change the active account ID is requested.
 - Any other native code calls.
 
+## Platform build-time API download support:
+- [x] Android
+- [ ] iOS
+- [ ] macOS
+- [ ] Linux
+- [ ] Windows
+- [ ] Web
 
 ## Stage 2:
 - Download API binary at build-time. The challenge with this is that it will need to be written in the native build code for each platform supported. See the following Flutter package for an example of how this is already solved: https://github.com/juancastillo0/wasm_run
