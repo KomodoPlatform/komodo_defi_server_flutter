@@ -1,4 +1,4 @@
-# Komodo DEX Flutter Server
+# AtomicDEX Flutter Server
 
 A Flutter package for running the AtomicDEX API binary on Flutter-supported devices.
 
