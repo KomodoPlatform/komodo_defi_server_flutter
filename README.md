@@ -1,8 +1,10 @@
-# AtomicDEX Flutter Server
+# Komodo DeFi Framework Flutter Server
 
-A Flutter package for running the AtomicDEX API binary on Flutter-supported devices.
+A Flutter package for running the Komodo DeFi Framework API binary on Flutter-supported devices.
 
 > :warning: **NOT PRODUCTION-READY**: This package is an early alpha version. Expect breaking API changes. Use at own risk.
+
+Most features are not yet implemented, and the package is not under active development.
 
 ## Roadmap:
 - [ ] IN PROGRESS: Download and validate API binary at build-time. See Appendix A
